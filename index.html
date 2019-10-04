@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="css.css">
+<head>
+<title>
+    Shopping List
+</title>
+</head>
+<body>
+<div class="container">
+    <h1>
+    Shopping List
+    </h1>
+    <form>
+        <label>
+        Add an item
+        </label>
+        <input type="text" placeholder="e.g., broccoli" id="itemName">
+        <button type="submit" id="addItem">
+        Add item
+        </button>
+    </form>
+    <ul id="shopinList">
+        <li class="shopItem">
+            <p>asd</p>
+            <input type="button" class="item-button item-check" value="Check">
+            <input type="button" class="item-button item-remove" value="Remove">
+        </li>
+    </ul>
+</div>
+<script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+<script>
+
+    var items = [];
+
+    $("#addItem").click(function(e){
+        e.preventDefault();
+        if($("#itemName").val() == ""){
+            alert("Escriba el nombre del articulo");
+            return;
+        }
+        items.push($("#itemName").val());
+        $("#itemName").val("");
+        refresh();
+    });
+
+    $("#shopinList").on("click", ".item-check", function(){
+        var text = $(this).parent().find("p");
+        if(text.css("text-decoration-line") == "line-through"){
+            text.css("text-decoration-line", "none");
+        }
+        else{
+            text.css("text-decoration-line", "line-through");
+        }
+    })
+
+    $("#shopinList").on("click", ".item-remove", function(){
+        var id = $(this).parent().data("id");
+        items.splice(id, 1);
+        refresh();
+    })
+
+    var refresh = function(){
+        $("#shopinList").html("");
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            addItem(item, i);
+        }
+    }
+
+    var addItem = function(name, i){
+        $("#shopinList").append(`
+        
+        <li class="shopItem" data-id="${i}">
+            <p>${name}</p>
+            <input type="button" class="item-button item-check" value="Check">
+            <input type="button" class="item-button item-remove" value="Remove">
+        </li>
+        
+        `);
+    }
+</script>
+</body>
+</html>
